@@ -55,7 +55,7 @@ jobs:
          id: step-06
          uses: actions/upload-pages-artifact@v2
          with:
-         path: ${{ github.workspace }}/docs
+          path: ${{ github.workspace }}/docs
 	 
        - name: "Step 07 - Zip artifact"
     	 id: step-07
