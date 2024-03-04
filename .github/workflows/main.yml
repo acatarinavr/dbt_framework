@@ -30,9 +30,9 @@ jobs:
          run: dbt --version
 
        - name: "Step 04 - Compile dbt"
-	 id: step-04
-	 working-directory: ./dbt-docs/dbt
-	 run: |
+         id: step-04
+         working-directory: ./dbt-docs/dbt
+         run: |
           ls -ltra
           export DBT_PROFILES_DIR=$PWD
           dbt deps
