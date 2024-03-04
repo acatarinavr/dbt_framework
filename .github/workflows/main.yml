@@ -39,17 +39,17 @@ jobs:
           dbt debug -t $ENV_CODE
           dbt compile -t $ENV_CODE
 
-        - name: "Step 05 - Generate dbt docs"
+       - name: "Step 05 - Generate dbt docs"
          id: step-05
          working-directory: ./dbt-docs/dbt
          run: |
-          export DBT_PROFILES_DIR=$PWD
-          dbt deps
-          dbt docs generate -t $ENV_CODE
-          cd target
-          mkdir ${{ github.workspace }}/docs
-          cp *.json *.html graph.gpickle ${{ github.workspace }}/docs
-          ls -ltra ${{ github.workspace }}/docs
+           export DBT_PROFILES_DIR=$PWD
+           dbt deps
+           dbt docs generate -t $ENV_CODE
+           cd target
+           mkdir ${{ github.workspace }}/docs
+           cp *.json *.html graph.gpickle ${{ github.workspace }}/docs
+           ls -ltra ${{ github.workspace }}/docs
 
 	- name: "Step 06 - Upload pages to artifact"
 	  id: step-06
