@@ -10,10 +10,9 @@ on:
 jobs:
 # Build job
     build:
-     name: deploy to prod
-	runs-on: ubuntu-latest
-	environment: prd
-	env:
+     runs-on: ubuntu-latest
+     environment: prd
+     env:
 		ENV_CODE: ${{vars.ENV_CODE}}
 		PROJ_CODE: ${{vars.PROJ_CODE}}
 		SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
