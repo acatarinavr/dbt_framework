@@ -51,11 +51,11 @@ jobs:
            cp *.json *.html graph.gpickle ${{ github.workspace }}/docs
            ls -ltra ${{ github.workspace }}/docs
 
-	- name: "Step 06 - Upload pages to artifact"
-	  id: step-06
-	  uses: actions/upload-pages-artifact@v2
-	  with:
-	   path: ${{ github.workspace }}/docs
+       - name: "Step 06 - Upload pages to artifact"
+         id: step-06
+         uses: actions/upload-pages-artifact@v2
+         with:
+         path: ${{ github.workspace }}/docs
 
     	- name: "Step 07 - Zip artifact"
     	  id: step-07
