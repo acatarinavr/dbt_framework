@@ -1,5 +1,6 @@
 {# This macro uses the codegen library to create the base yml file #}
 {#  run this command dbt --quiet run-operation generate_source_yml > models/test.yml #}
+{# However then tere is an error when trying to use the project #}
 
 {% macro generate_source_yml() %}
     
