@@ -10,12 +10,12 @@ on:
 jobs:
 # Build job
     build:
-		runs-on: ubuntu-latest
-		environment: prd
-		env:
-			ENV_CODE: ${{vars.ENV_CODE}}
-			PROJ_CODE: ${{vars.PROJ_CODE}}
-			SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+	runs-on: ubuntu-latest
+	environment: prd
+	env:
+		ENV_CODE: ${{vars.ENV_CODE}}
+		PROJ_CODE: ${{vars.PROJ_CODE}}
+		SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
    
         steps:
             - name: "Step 01 - Checkout current branch"
