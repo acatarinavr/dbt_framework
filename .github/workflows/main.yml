@@ -26,7 +26,7 @@ jobs:
          run: pip3 install dbt-core dbt-snowflake
 
        - name: "Step 03 - Verify dbt"
-    	 id: step-03
+    	   id: step-03
          run: dbt --version
 
        - name: "Step 04 - Compile dbt"
