@@ -56,17 +56,7 @@ jobs:
          uses: actions/upload-pages-artifact@v2
          with:
           path: ${{ github.workspace }}/docs
-	 
-       - name: "Step 07 - Zip artifact"
-    	 id: step-07
-         run: zip -jrq docs.zip ${{ github.workspace }}/docs
-    
-       - name: "Step 08 - Upload artifact for deployment job"
-         id: step-08
-         uses: actions/upload-artifact@v3
-         with:
-         name: docs
-         Path: docs.zip
+
 
 # Deploy to Github pages
 deploy-to-github-pages:
