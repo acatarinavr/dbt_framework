@@ -38,8 +38,8 @@ jobs:
           dbt deps
           dbt debug -t $ENV_CODE
           dbt compile -t $ENV_CODE
-
-	- name: "Step 05 - Generate dbt docs"
+	
+       - name: "Step 05 - Generate dbt docs"
 	  id: step-05
 	  working-directory: ./dbt-docs/dbt
 	  run: |
