@@ -13,11 +13,11 @@ jobs:
      runs-on: ubuntu-latest
      environment: prd
      env:
-		ENV_CODE: ${{vars.ENV_CODE}}
-		PROJ_CODE: ${{vars.PROJ_CODE}}
-		SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      ENV_CODE: ${{vars.ENV_CODE}}
+      PROJ_CODE: ${{vars.PROJ_CODE}}
+      SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
    
-        steps:
+      steps:
             - name: "Step 01 - Checkout current branch"
               id: step-01
 			  uses: actions/checkout@v3
