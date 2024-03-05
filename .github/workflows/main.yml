@@ -32,7 +32,7 @@ jobs:
             prod:
               type: snowflake
               threads: 14
-              account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+              account: vi27304.uk-south.azure
               database: TASTY_BYTES_SAMPLE_DATA
               role: ACCOUNTADMIN
               schema: TASTY_BYTES_SAMPLE_DATA
