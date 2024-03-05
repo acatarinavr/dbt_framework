@@ -1,76 +1,54 @@
-name: "dbt prd pipeline"
+name: Deploy dbt docs to GitHub Pages
+
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
-# Build job
-    build:
-     runs-on: ubuntu-latest
-     environment: prd
-     env:
-      ENV_CODE: ${{vars.ENV_CODE}}
-      PROJ_CODE: ${{vars.PROJ_CODE}}
-      SNOWSQL_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-     steps:
-       - name: "Step 01 - Checkout current branch"
-         id: step-01
-         uses: actions/checkout@v3
+  deploy:
+    runs-on: ubuntu-latest
 
-       - name: "Step 02 - Install dbt"
-         id: step-02
-         run: pip3 install dbt-core dbt-snowflake
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-       - name: "Step 03 - Verify dbt"
-         id: step-03
-         run: dbt --version
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
 
-       - name: "Step 04 - Compile dbt"
-         id: step-04
-         working-directory: ./dbt-docs/dbt
-         run: |
-          ls -ltra
-          export DBT_PROFILES_DIR=$PWD
-          dbt deps
-          dbt debug -t $ENV_CODE
-          dbt compile -t $ENV_CODE
+    - name: Install dbt
+      run: pip install dbt-snowflake
 
-       - name: "Step 05 - Generate dbt docs"
-         id: step-05
-         working-directory: ./dbt-docs/dbt
-         run: |
-           export DBT_PROFILES_DIR=$PWD
-           dbt deps
-           dbt docs generate -t $ENV_CODE
-           cd target
-           mkdir ${{ github.workspace }}/docs
-           cp *.json *.html graph.gpickle ${{ github.workspace }}/docs
-           ls -ltra ${{ github.workspace }}/docs
+    - name: Set up dbt profile
+      run: |
+        mkdir -p ~/.dbt
+        echo "
+        gmds_demo_aws:
+          target: prod
+          outputs:
+            prod:
+              type: snowflake
+              threads: 14
+              account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+              database: TASTY_BYTES_SAMPLE_DATA
+              role: ACCOUNTADMIN
+              schema: TASTY_BYTES_SAMPLE_DATA
+              warehouse: COMPUTE_WH
+              user: ${{ secrets.SNOWFLAKE_USER }}
+              password: ${{ secrets.SNOWFLAKE_PASS }}
+        " > ~/.dbt/profiles.yml      
 
-       - name: "Step 06 - Upload pages to artifact"
-         id: step-06
-         uses: actions/upload-pages-artifact@v2
-         with:
-          path: ${{ github.workspace }}/docs
+    - name: Install dependancies
+      run: dbt deps
+      
+    - name: Generate dbt docs
+      run: dbt docs generate
 
-
-# Deploy to Github pages
-deploy-to-github-pages:
- needs: build
- # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
- permissions:
-  pages: write # to deploy to Pages
-  id-token: write # to verify the deployment originates from an appropriate source
-  # Deploy to the github-pages environment
- environment:
-  name: github-pages
-  url: ${{ steps.deployment.outputs.page_url }}
-
-	# Specify runner + deployment step
-runs-on: ubuntu-latest
- steps:
-  - name: Deploy to GitHub Pages
-    id: deployment
-    uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GH_PAT }}
+        publish_dir: ./target
